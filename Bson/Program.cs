@@ -46,15 +46,17 @@ namespace ReferenceConsoleRedisApp
 
         static async Task CriarCadastro(IDatabase db)
             {
-                console.WriteLine("Digite a chave do cadastro");
+                console.WriteLine("Digite a chave do cadastro:");
                 var chave = Console.ReadLine();
-                console.WriteLine("Digite a chave do cadastro");
+
+                console.WriteLine("Digite os detalhes do cadastro:");
                 var detalhes = Console.ReadLine();
-                console.WriteLine("Digite a chave do cadastro");
+
             
                 await db.StringSetAsync(chave, detalhes);
-                console.WriteLine("Cadastro Criado com sucesso!");
+                console.WriteLine("Cadastro criado com sucesso!");
             }
+            
               static async Task AtualizarCadastro(IDatabase db)
             {
                 console.WriteLine("Digite a chave do cadastro");
@@ -84,6 +86,9 @@ namespace ReferenceConsoleRedisApp
                 console.WriteLine("Digite a chave do cadastro");
              
              foreach(var keys )
+                {
+                    
+                }
             }
 
         }
