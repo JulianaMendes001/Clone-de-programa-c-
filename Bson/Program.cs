@@ -16,7 +16,7 @@ namespace ReferenceConsoleRedisApp
                 Console.WriteLine("selecionar uma opção:");
                 Console.WriteLine("1. Criar Cadastro:");
                 Console.WriteLine("2. Atualizar Cadastro:");
-                Console.WriteLine("3. excluir Cadastro:");
+                Console.WriteLine("3. Excluir Cadastro:");
                 Console.WriteLine("4. Listar Cadastros:");
 
                 var opcao = Console.ReadLine();
@@ -39,11 +39,13 @@ namespace ReferenceConsoleRedisApp
                     Environment.Exit(0);
                     break;
                     default:
-                    Console.WriteLine("Opção inválida. tente novamente");
+                    Console.WriteLine("Opção inválida. Tente novamente");
                     break;
                 }
             }
 
+        
+        //método criar cadastro
         static async Task CriarCadastro(IDatabase db)
             {
                 console.WriteLine("Digite a chave do cadastro:");
@@ -51,48 +53,47 @@ namespace ReferenceConsoleRedisApp
 
                 console.WriteLine("Digite os detalhes do cadastro:");
                 var detalhes = Console.ReadLine();
-
             
                 await db.StringSetAsync(chave, detalhes);
                 console.WriteLine("Cadastro criado com sucesso!");
             }
-            
+
+            //método atualizar cadastro
               static async Task AtualizarCadastro(IDatabase db)
             {
-                console.WriteLine("Digite a chave do cadastro");
+                console.WriteLine("Digite a chave do cadastro que deseja atualizar:");
                 var chave = Console.ReadLine();
-                console.WriteLine("Digite a chave do cadastro");
-                var detalhes = Console.ReadLine();
-                console.WriteLine("Digite a chave do cadastro");
+
+                console.WriteLine("Digite os novos detalhes do cadastro");
+                var novosDetalhes = Console.ReadLine();
             
-                await db.StringSetAsync(chave, detalhes);
-                console.WriteLine("Cadastro Criado com sucesso!");
-            }
-              static async Task ExcluirCadastro(IDatabase db)
-            {
-                console.WriteLine("Digite a chave do cadastro");
-                var chave = Console.ReadLine();
-                console.WriteLine("Digite a chave do cadastro");
-                var detalhes = Console.ReadLine();
-                console.WriteLine("Digite a chave do cadastro");
-            
-                await db.StringSetAsync(chave, detalhes);
-                console.WriteLine("Cadastro Criado com sucesso!");
-            }
-              static async Task ListarCadastro(IDatabase db)
-            {
-                console.WriteLine("Listando Cadastro");
-                var keys = await db.ExecuteAsync("KEYS", "*");
-                console.WriteLine("Digite a chave do cadastro");
-             
-             foreach(var keys )
-                {
-                    
-                }
+                await db.StringSetAsync(chave, novosDetalhes);
+                console.WriteLine("Cadastro atualizado com sucesso!");
             }
 
+            //método de excluir cadastro
+              static async Task ExcluirCadastro(IDatabase db)
+            {
+                console.WriteLine("Digite a chave do cadastro que deseja excluir:");
+                var chave = Console.ReadLine();
+               
+                await db.KeyDeleteAsync(chave);
+                console.WriteLine("Cadastro excluído com sucesso!");
+            }
+
+            //método listar cadastro
+              static async Task ListarCadastro(IDatabase db)
+            {
+                console.WriteLine("Listando cadastros:");
+
+                var keys = await db.ExecuteAsync("KEYS", "*");
+                foreach (var key in (RedisResult[])keys)
+                {
+                    var detalhes = await db.StringGetAsync((string)key);
+                    Console.WriteLine($"Chave: {key}, Valor: {detalhes}\n");
+                }
+            }
         }
-   
-   
     }
+
 }
